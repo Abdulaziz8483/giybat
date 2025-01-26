@@ -1,4 +1,4 @@
 package dasturlashuz.giybat.entity;
 
-public class ProfileEntity {
+public class Profile {
 }

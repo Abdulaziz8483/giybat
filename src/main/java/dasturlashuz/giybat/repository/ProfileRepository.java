@@ -1,4 +1,7 @@
 package dasturlashuz.giybat.repository;
 
-public interface ProfileRepository {
+import dasturlashuz.giybat.entity.Profile;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProfileRepository extends JpaRepository<Profile, Long> {
 }

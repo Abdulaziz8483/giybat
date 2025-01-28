@@ -15,8 +15,8 @@ public class ProfileController {
     @Autowired
     ProfileService service;
 
-    @PostMapping("")
+    /*@PostMapping("")
     public ResponseEntity<ProfileCreateDTO.ProfileResponse> create(@RequestBody ProfileCreateDTO profileDTO) {
         return ResponseEntity.ok(service.create(profileDTO));
-    }
+    }*/
 }

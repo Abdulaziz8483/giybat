@@ -11,5 +11,6 @@ public interface ProfileMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "role", target = "role")
     ProfileCreateDTO.ProfileResponse profileToProfileDTO(Profile profile);
 }

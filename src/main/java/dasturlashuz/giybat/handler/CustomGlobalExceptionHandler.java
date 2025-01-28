@@ -1,6 +1,7 @@
 package dasturlashuz.giybat.handler;
 
 import dasturlashuz.giybat.exceptions.EmailOrPhoneAlreadyExistsException;
+import dasturlashuz.giybat.exceptions.InvalidPasswordException;
 import dasturlashuz.giybat.exceptions.MissingRequiredFieldsException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpHeaders;
@@ -43,6 +44,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(MissingRequiredFieldsException.class)
     public ResponseEntity<?> exceptionHandler(MissingRequiredFieldsException e) {
+        return ResponseEntity.status(400).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<?> exceptionHandler(InvalidPasswordException e) {
         return ResponseEntity.status(400).body(e.getMessage());
     }
 }

@@ -20,10 +20,10 @@ public class Profile {
     @Column(nullable = false)
     String name;
 
-    @Column(nullable = false)
+    @Column
     String email;
 
-    @Column(nullable = false)
+    @Column
     String phone;
 
     @Column(nullable = false)

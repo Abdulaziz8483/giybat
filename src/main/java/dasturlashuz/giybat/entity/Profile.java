@@ -4,18 +4,23 @@ import dasturlashuz.giybat.enums.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "profile")
-@Data
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
 
     @Column(nullable = false)
     String name;

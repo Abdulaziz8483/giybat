@@ -16,7 +16,7 @@ public record ProfileCreateDTO(
     public record ProfileResponse(
             String name,
             String username,
-            ProfileStatus status,
-            ProfileRole role
+            ProfileStatus status
+            //ProfileRole role
     ){}
 }

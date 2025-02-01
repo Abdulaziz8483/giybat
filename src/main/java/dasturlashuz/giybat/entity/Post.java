@@ -39,6 +39,4 @@ public class Post {
 
      @Column(nullable = false)
      Boolean visible;
-
-
 }

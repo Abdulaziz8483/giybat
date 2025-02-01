@@ -25,12 +25,12 @@ public class ProfileController {
     }
 
     @PutMapping("/{profileId}")
-    public ResponseEntity<ProfileCreateDTO.ProfileResponse>update(@PathVariable Long profileId, @RequestBody ProfileCreateDTO profileDTO) {
+    public ResponseEntity<ProfileCreateDTO.ProfileResponse>update(@PathVariable Integer profileId, @RequestBody ProfileCreateDTO profileDTO) {
         return ResponseEntity.ok(service.update(profileId, profileDTO));
     }
 
     @DeleteMapping("/{profileId}")
-    public ResponseEntity<String> delete(@PathVariable Long profileId) {
+    public ResponseEntity<String> delete(@PathVariable Integer profileId) {
         return ResponseEntity.ok(service.delete(profileId));
     }
 }

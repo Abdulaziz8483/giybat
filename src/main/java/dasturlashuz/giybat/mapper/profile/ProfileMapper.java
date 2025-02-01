@@ -10,6 +10,6 @@ public interface ProfileMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "status", target = "status")
-    @Mapping(source = "role", target = "role")
+    //@Mapping(source = "role", target = "role")
     ProfileCreateDTO.ProfileResponse profileToProfileDTO(ProfileEntity profile);
 }

@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttachEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
     @Column(nullable = false, name = "origin_name")
@@ -30,9 +29,6 @@ public class AttachEntity {
     @Column(nullable = false)
     String path;
 
-    @Column(nullable = false)
-    String duration;
-    
     @Column(nullable = false)
     LocalDateTime createdAt;
 

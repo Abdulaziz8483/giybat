@@ -37,6 +37,13 @@ public class Post {
      @Column(nullable = false)
      PostStatus status;
 
+     @Column(name = "attach_id", nullable = false)
+     String attachId;
+
+     @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name = "attach_id", insertable = false, updatable = false)
+     AttachEntity photo;
+
      @Column(nullable = false)
      Boolean visible;
 }

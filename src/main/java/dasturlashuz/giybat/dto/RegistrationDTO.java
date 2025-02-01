@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 public class RegistrationDTO {
     @NotBlank(message = "Name required")
     private String name;
-    @NotBlank(message = "surname required")
-    private String surname;
     @NotBlank(message = "username required")
     private String username;
     @NotBlank(message = "Password required")
@@ -37,12 +35,5 @@ public class RegistrationDTO {
         this.username = username;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 }
 

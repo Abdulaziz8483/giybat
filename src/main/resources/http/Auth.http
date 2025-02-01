@@ -9,7 +9,6 @@ Content-Type: application/json
 
 {
   "name": "laziz",
-  "surname": "Komilov2",
   "username": "komilovlazizbek48+1@gmail.com",
   "password": "12345"
 }

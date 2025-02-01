@@ -8,16 +8,14 @@ import lombok.experimental.FieldDefaults;
 
 public record ProfileCreateDTO(
         String name,
-        String email,
-        String phone,
+        String username,
         String password,
         ProfileStatus status,
         ProfileRole role
 ) {
     public record ProfileResponse(
             String name,
-            String email,
-            String phone,
+            String username,
             ProfileStatus status,
             ProfileRole role
     ){}

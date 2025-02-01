@@ -1,8 +1,8 @@
 package dasturlashuz.giybat.service;
 
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 public class EmailSendingService {
     @Value("${spring.mail.username}")
     private String fromAccount;
-    @Autowired
-    private JavaMailSender mailSender;
+
+    private final JavaMailSender javaMailSender;
+
+    public EmailSendingService(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
 
     public void sendRegistrationEmail(String email, Integer profileId) {
@@ -60,14 +64,14 @@ public class EmailSendingService {
         try {
 
 
-            MimeMessage msg = mailSender.createMimeMessage();
+            MimeMessage msg = javaMailSender.createMimeMessage();
             msg.setFrom(fromAccount);
 
             MimeMessageHelper helper = new MimeMessageHelper(msg, true);
             helper.setTo(email);
             helper.setSubject(subject);
             helper.setText(body, true);
-            mailSender.send(msg);
+            javaMailSender.send(msg);
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);

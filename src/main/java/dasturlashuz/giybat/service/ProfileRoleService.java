@@ -3,6 +3,7 @@ package dasturlashuz.giybat.service;
 
 import dasturlashuz.giybat.entity.ProfileRoleEntity;
 import dasturlashuz.giybat.enums.ProfileRole;
+import dasturlashuz.giybat.repository.ProfileRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

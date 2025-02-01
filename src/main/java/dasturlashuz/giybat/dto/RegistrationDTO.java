@@ -1,6 +1,8 @@
 package dasturlashuz.giybat.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
+
 public class RegistrationDTO {
     @NotBlank(message = "Name required")
     private String name;

@@ -1,0 +1,29 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### Registration
+
+POST http://localhost:8081/api/v1/auth/registration
+Content-Type: application/json
+
+{
+  "name": "laziz",
+  "surname": "Komilov2",
+  "username": "komilovlazizbek48+1@gmail.com",
+  "password": "12345"
+}
+
+###
+GET http://localhost:8081/api/v1/auth/verification/{profileId}
+
+###
+POST http://localhost:8081/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "komilovlazizbek48+1@gmail.com",
+  "password": "12345"
+}
+
+

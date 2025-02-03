@@ -1,5 +1,6 @@
 package dasturlashuz.giybat.handler;
 
+import dasturlashuz.giybat.exceptions.AppBadException;
 import dasturlashuz.giybat.exceptions.EmailOrPhoneAlreadyExistsException;
 import dasturlashuz.giybat.exceptions.InvalidPasswordException;
 import dasturlashuz.giybat.exceptions.MissingRequiredFieldsException;
@@ -49,6 +50,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<?> exceptionHandler(InvalidPasswordException e) {
+        return ResponseEntity.status(400).body(e.getMessage());
+    }
+    @ExceptionHandler(AppBadException.class)
+    public ResponseEntity<?> exceptionHandler(AppBadException e) {
         return ResponseEntity.status(400).body(e.getMessage());
     }
 }

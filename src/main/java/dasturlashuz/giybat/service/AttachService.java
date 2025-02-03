@@ -2,22 +2,29 @@ package dasturlashuz.giybat.service;
 
 import dasturlashuz.giybat.dto.attach.AttachResponse;
 import dasturlashuz.giybat.entity.AttachEntity;
+import dasturlashuz.giybat.exceptions.AppBadException;
 import dasturlashuz.giybat.mapper.attach.AttachMapper;
 import dasturlashuz.giybat.repository.AttachRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +34,14 @@ public class AttachService {
     @Value("${attach.upload.folder}")
     private String folderName;
 
+    @Value("${attach.ulr}")
+    private String attachUrl;
+
     @Qualifier("attachMapper")
     private final AttachMapper attachMapper;
 
     @Transactional
-    public AttachResponse upload(MultipartFile file) {
+    public AttachResponse.AttachUrl upload(MultipartFile file) {
         String pathFolder = generateDataBaseFolder();
         String key = UUID.randomUUID().toString();
         String extension = getExtension(file.getOriginalFilename());
@@ -40,7 +50,7 @@ public class AttachService {
 
         AttachEntity attach = createAttachEntity(file, key, extension, pathFolder);
 
-        return attachMapper.attachEntityToAttachResponse(attach);
+        return new AttachResponse.AttachUrl(openUrl(attach.getId()));
     }
 
     private AttachEntity createAttachEntity(MultipartFile file, String key, String extension, String pathFolder) {
@@ -91,5 +101,70 @@ public class AttachService {
         int lastIndex = filename.lastIndexOf(".");
 
         return filename.substring(lastIndex + 1);
+    }
+
+    public List<AttachResponse> getAll() {
+        List<AttachResponse> responses = new ArrayList<>();
+        for (AttachEntity entity : attachRepository.findAll()) {
+            responses.add(attachMapper.attachEntityToAttachResponse(entity));
+        }
+        return responses;
+    }
+
+    public String delete(String attachId) {
+        Optional<AttachEntity> optionalAttach = attachRepository.findById(attachId);
+        if (optionalAttach.isEmpty()) throw new AppBadException("Attach not found");
+        attachRepository.delete(optionalAttach.get());
+        return "Deleted attach from database";
+    }
+
+    public String openUrl(String fileName) {
+        if(fileName == null){
+            return null;
+        }
+
+        if (isExist(fileName)) {
+            String url = attachUrl + "/open/" + fileName;
+            return url;
+        }
+        return null;
+    }
+
+
+    private Boolean isExist(String attachId) {
+        if (attachId == null) return false;
+
+        boolean exist = attachRepository.existsByIdAndVisibleTrue(attachId);
+        return exist;
+    }
+
+    public ResponseEntity<Resource> open(String attachId) {
+        AttachEntity entity = getEntity(attachId);
+        String path = folderName + "/" + entity.getPath() +"/"+ entity.getId();
+        Path filePath = Paths.get(path).normalize();
+        Resource resource = null;
+        try{
+            resource = new UrlResource(filePath.toUri());
+            if (!resource.exists()){
+                throw new AppBadException("File not found" +  entity.getId());
+            }
+            String contentType = Files.probeContentType(filePath);
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    public AttachEntity getEntity(String attachId) {
+        Optional<AttachEntity> optionalAttach = attachRepository.findById(attachId);
+        if (optionalAttach.isEmpty()) throw new AppBadException("Attach not found");
+        return optionalAttach.get();
     }
 }

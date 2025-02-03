@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Setter
 @Getter
-public class Post {
+public class PostEntity {
      @Id
      @GeneratedValue(strategy = GenerationType.UUID)
      String id;

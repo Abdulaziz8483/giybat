@@ -10,4 +10,7 @@ public record AttachResponse(
     LocalDateTime createdDate,
     String url
 ) {
+    public record AttachUrl(
+            String url
+    ){}
 }

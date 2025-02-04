@@ -50,7 +50,7 @@ public class AttachService {
 
         AttachEntity attach = createAttachEntity(file, key, extension, pathFolder);
 
-        return new AttachResponse.AttachUrl(openUrl(attach.getId()));
+        return new AttachResponse.AttachUrl(attach.getId(), openUrl(attach.getId()));
     }
 
     private AttachEntity createAttachEntity(MultipartFile file, String key, String extension, String pathFolder) {

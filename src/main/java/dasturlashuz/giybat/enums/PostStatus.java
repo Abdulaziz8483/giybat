@@ -1,5 +1,5 @@
 package dasturlashuz.giybat.enums;
 
 public enum PostStatus {
-    POSTED
+    POSTED, PENDING, DRAFT, ARCHIVED
 }

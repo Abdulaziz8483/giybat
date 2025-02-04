@@ -1,0 +1,19 @@
+### Upload Photo
+POST http://localhost:8080/api/attach/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="neoclassical-medieval-portrait-knight-illustration.jpg"
+Content-Type: application/octet-stream
+
+/home/diyorbek/Pictures/neoclassical-medieval-portrait-knight-illustration.jpg
+--WebAppBoundary--
+
+### Get all
+GET localhost:8080/api/attach
+
+### Delete
+DELETE localhost:8080/api/attach/48d6b3ad-590b-44c2-aa93-511e5f813fbd.jpg
+
+### Open attach
+GET localhost:8080/api/attach/open/5fd612f4-f29b-4aac-8492-e058e462e35a.jpg

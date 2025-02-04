@@ -1,0 +1,10 @@
+### Create post
+POST localhost:8080/api/post
+Content-Type: application/json
+Authorization: Bearer <your token>
+
+{
+  "title": "Texnologiya va Dasturlash: Keljak bizniki",
+  "content": "Bugungi kunda dasturlash hayotimizning ajralmas qismiga aylanib bormoqda. Sun’iy intellekt, avtomatlashtirilgan tizimlar va ma’lumotlar tahlili kundalik ish faoliyatimizni yengillashtirmoqda. Har bir dasturchi o‘z bilimlarini muntazam ravishda oshirib borishi lozim. Eng muhimi – doimiy o‘rganish va amaliyot qilish. Siz ham yangi dasturlash tillarini o‘rganishga tayyormisiz? 🚀",
+  "photoId": "a79b2f28-d8a7-4951-a937-f822cb1a7ef8.jpg"
+}

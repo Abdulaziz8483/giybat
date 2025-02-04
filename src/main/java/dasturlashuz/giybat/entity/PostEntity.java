@@ -22,11 +22,11 @@ public class PostEntity {
      @Column(nullable = false)
      String title;
 
-     @Column(nullable = false)
+     @Column(nullable = false, columnDefinition = "TEXT")
      String content;
 
      @Column(nullable = false)
-     Long profileId;
+     Integer profileId;
 
      @Column(nullable = false)
      LocalDateTime createdAt;
@@ -35,6 +35,7 @@ public class PostEntity {
      LocalDateTime updatedAt;
 
      @Column(nullable = false)
+     @Enumerated(EnumType.STRING)
      PostStatus status;
 
      @Column(name = "attach_id", nullable = false)

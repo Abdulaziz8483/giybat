@@ -35,3 +35,4 @@ build/
 /src/main/resources/talablar.txt
 /src/main/resources/http/local/attach.http
 /src/main/resources/http/local/post.http
+/src/main/resources/http/local/auth.http

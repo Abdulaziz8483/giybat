@@ -11,6 +11,7 @@ public record AttachResponse(
     String url
 ) {
     public record AttachUrl(
+            String id,
             String url
     ){}
 }

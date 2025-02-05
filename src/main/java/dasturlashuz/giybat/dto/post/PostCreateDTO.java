@@ -18,4 +18,22 @@ public record PostCreateDTO(
             String photoId,
             LocalDateTime createdDate
     ){}
+    public record PostFilterDTO(
+            String title,
+            LocalDateTime publishedDateFrom,
+            LocalDateTime publishedDateTo,
+            Integer profileId
+    ){}
+    public record PostFilterResponse(
+            String id,
+            String title,
+            String content,
+            String postPhotoId,
+            String postPhotoUrl,
+            LocalDateTime createdDate,
+
+            Integer profileId,
+            String name,
+            String profilePhotoUrl
+    ){}
 }

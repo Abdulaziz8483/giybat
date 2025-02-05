@@ -120,4 +120,13 @@ public class ProfileService {
         }
         return new StandardResponse("username", true);
     }
+
+    public ProfileEntity findByIdForSession(Integer profileId){
+        Optional<ProfileEntity> optionalProfile = profileRepository.findById(profileId);
+        if (optionalProfile.isEmpty()){
+            throw new AppBadException("Profile not found");
+        }
+        return optionalProfile.get();
+    }
+
 }

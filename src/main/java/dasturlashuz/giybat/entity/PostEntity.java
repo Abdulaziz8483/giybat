@@ -32,6 +32,9 @@ public class PostEntity {
      LocalDateTime createdAt;
 
      @Column
+     LocalDateTime publishedAt;
+
+     @Column
      LocalDateTime updatedAt;
 
      @Column(nullable = false)

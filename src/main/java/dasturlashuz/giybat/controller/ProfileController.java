@@ -2,6 +2,7 @@ package dasturlashuz.giybat.controller;
 
 import dasturlashuz.giybat.dto.profile.ProfileCreateDTO;
 import dasturlashuz.giybat.service.ProfileService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +39,23 @@ public class ProfileController {
     public ResponseEntity<ProfileCreateDTO.ProfileDetailDTO> getDetail(){
         return ResponseEntity.ok(service.getDetail());
     }
+
+    @PutMapping("/update-name")
+    public ResponseEntity<ProfileCreateDTO.ProfileResponse> updateName(@RequestBody @Valid ProfileCreateDTO.ProfileUpdateName dto) {
+        return ResponseEntity.ok(service.updateName(dto));
+    }
+
+    @PutMapping("/update-photo")
+    public ResponseEntity<ProfileCreateDTO.ProfileResponse> updatePhoto(@RequestBody @Valid ProfileCreateDTO.ProfileUpdatePhoto dto){
+        return ResponseEntity.ok(service.updatePhoto(dto));
+    }
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody @Valid ProfileCreateDTO.ProfileUpdatePassword dto){
+        return ResponseEntity.ok(service.updatePassword(dto));
+    }
+    @PutMapping("/update-username")
+    public ResponseEntity<String> updateUsername(@RequestBody @Valid ProfileCreateDTO.ProfileUpdateUsername dto){
+        return ResponseEntity.ok(service.updateUsername(dto));
+    }
+
 }

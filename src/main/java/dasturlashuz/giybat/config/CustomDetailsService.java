@@ -28,7 +28,7 @@ class CustomDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         ProfileEntity profile = optional.get();
-        profile.getRole().size();
+        profile.getRoles().size();
         return new CustomUserDetails(profile);
     }
 }

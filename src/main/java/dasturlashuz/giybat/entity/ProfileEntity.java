@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name = "profile")
+@Table(name = "profiles")
 @Entity
 @Getter
 @Setter
@@ -36,6 +36,13 @@ public class ProfileEntity {
     private LocalDateTime createdDate;
 
     @OneToMany(mappedBy = "profile")
-    private List<ProfileRoleEntity> role;
+    private List<ProfileRoleEntity> roles;
+
+
+    @Column(name = "attach_id")
+    private String attachId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "attach_id", insertable = false, updatable = false )
+    private AttachEntity attach;
 
    }

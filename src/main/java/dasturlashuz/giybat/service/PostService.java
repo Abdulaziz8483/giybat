@@ -155,8 +155,8 @@ public class PostService {
     public boolean checkAdmin() {
         Integer currentUserId = getCurrentUserId();
         ProfileEntity currentProfile = profileService.findByIdForSession(currentUserId);
-        for (ProfileRoleEntity profileRoleEntity : currentProfile.getRole()) {
-            if (profileRoleEntity.getRoles().equals(ProfileRole.ADMIN)){
+        for (ProfileRoleEntity profileRoleEntity : currentProfile.getRoles()) {
+            if (profileRoleEntity.getRole().equals(ProfileRole.ADMIN)){
                 return true;
             }
         }

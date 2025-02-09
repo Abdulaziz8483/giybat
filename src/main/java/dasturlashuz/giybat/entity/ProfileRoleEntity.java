@@ -21,7 +21,7 @@ public class ProfileRoleEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "roles")
-    private ProfileRole roles;
+    private ProfileRole role;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
@@ -29,5 +29,4 @@ public class ProfileRoleEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id", insertable = false, updatable = false )
     private ProfileEntity profile;
-
    }

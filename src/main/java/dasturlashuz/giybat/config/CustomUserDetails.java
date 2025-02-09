@@ -30,13 +30,13 @@ public class CustomUserDetails implements UserDetails {
         this.username = profile.getUsername();
         this.password = profile.getPassword();
         this.status = profile.getStatus();
-        this.role = profile.getRole().get(0);
+        this.role = profile.getRoles().get(0);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.getRoles().name()));
+        authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
         return authorities;
     }
 

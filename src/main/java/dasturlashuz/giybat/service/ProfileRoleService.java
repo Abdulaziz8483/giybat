@@ -18,7 +18,7 @@ public class ProfileRoleService {
     public void createProfileRole(Integer profileId , ProfileRole profileRole) {
         ProfileRoleEntity entity = new ProfileRoleEntity();
         entity.setProfileId(profileId);
-        entity.setRoles(profileRole);
+        entity.setRole(profileRole);
         entity.setCreatedDate(LocalDateTime.now());
         profileRoleRepository.save(entity);
     }

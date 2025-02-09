@@ -33,4 +33,9 @@ public class ProfileController {
     public ResponseEntity<String> delete(@PathVariable Integer profileId) {
         return ResponseEntity.ok(service.delete(profileId));
     }
+
+    @GetMapping("/get-detail")
+    public ResponseEntity<ProfileCreateDTO.ProfileDetailDTO> getDetail(){
+        return ResponseEntity.ok(service.getDetail());
+    }
 }

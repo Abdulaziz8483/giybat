@@ -36,3 +36,4 @@ build/
 /src/main/resources/http/local/attach.http
 /src/main/resources/http/local/post.http
 /src/main/resources/http/local/auth.http
+/src/main/resources/http/local/profile.http

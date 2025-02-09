@@ -7,6 +7,7 @@ import dasturlashuz.giybat.entity.ProfileRoleEntity;
 import dasturlashuz.giybat.enums.ProfileRole;
 import dasturlashuz.giybat.exceptions.*;
 import dasturlashuz.giybat.mapper.profile.ProfileMapper;
+import dasturlashuz.giybat.mapper.profile.ProfileShortInfoMapper;
 import dasturlashuz.giybat.repository.ProfileRepository;
 import dasturlashuz.giybat.util.profile.ProfileUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static dasturlashuz.giybat.util.profile.ProfileUtil.checkPasswordValid;
+import static dasturlashuz.giybat.util.session.SpringSecurityUtil.getCurrentUserId;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,8 @@ public class ProfileService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ProfileRoleService profileRoleService;
+    @Autowired
+    private AttachService attachService;
 
     @Qualifier("profileMapper")
     private final ProfileMapper profileMapper;
@@ -65,10 +69,6 @@ public class ProfileService {
         profileRepository.save(profile);
         return profileMapper.profileToProfileDTO(profile);
     }
-
-
-
-
 
     public List<ProfileCreateDTO.ProfileResponse> getAll() {
         List<ProfileCreateDTO.ProfileResponse> profiles = new ArrayList<>();
@@ -112,6 +112,26 @@ public class ProfileService {
     }
 
 
+    public ProfileCreateDTO.ProfileDetailDTO getDetail() {
+        Integer currentUserId = getCurrentUserId();
+        ProfileShortInfoMapper map = profileRepository.getProfileShortInfoMapper(currentUserId);
+        Optional<String> optionalPhotoId = map.getPhotoId();
+        String photoUrl = null;
+        String photoId = null;
+        if (optionalPhotoId.isPresent()){
+            photoUrl = attachService.openUrl(optionalPhotoId.get());
+            photoId = optionalPhotoId.get();
+        }
+
+        System.out.println(map.getName());
+        List<String> roles = map.getRoles();
+
+
+        return new ProfileCreateDTO.ProfileDetailDTO(map.getName(), map.getUsername(), map.getRoles(), photoId, photoUrl);
+    }
+
+
+    // DataBase bilan boglana oladigan yordamchi class lar
 
     public StandardResponse checkUsernameExists(String email) {
         boolean exists = profileRepository.existsByUsernameAndVisibleTrue(email);
@@ -128,5 +148,4 @@ public class ProfileService {
         }
         return optionalProfile.get();
     }
-
 }

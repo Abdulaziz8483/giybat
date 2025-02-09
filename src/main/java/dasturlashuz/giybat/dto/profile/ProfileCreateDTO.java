@@ -2,6 +2,11 @@ package dasturlashuz.giybat.dto.profile;
 
 import dasturlashuz.giybat.enums.ProfileRole;
 import dasturlashuz.giybat.enums.ProfileStatus;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
@@ -46,4 +51,33 @@ public record ProfileCreateDTO(
             String photoId,
             String photoUrl
     ){}
+    public record ProfileUpdateName(
+            @NotBlank(message = "The name should not be empty")
+            @Size(min = 3, message = "Please enter more than 3 characters.")
+            String name
+    ){}
+
+    public record ProfileUpdatePhoto(
+            @NotBlank(message = "The photoId should not be empty")
+            String photoId
+    ){}
+
+    public record ProfileUpdatePassword(
+            @NotBlank(message = "The password should not be empty")
+            @Size(min = 4, message = "Please enter more than 6 characters")
+            String oldPassword,
+
+            @NotBlank(message = "The password should not be empty")
+            @Size(min = 6, message = "Please enter more than 6 characters")
+            String newPassword
+
+    ) {
+    }
+
+    public record ProfileUpdateUsername(
+            @NotBlank(message = "The username should not be empty")
+            @Size(min = 16, message = "Please enter more than 16 characters")
+            String username
+    ) {
+    }
 }

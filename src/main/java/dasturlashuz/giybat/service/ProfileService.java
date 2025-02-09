@@ -5,15 +5,18 @@ import dasturlashuz.giybat.dto.profile.ProfileCreateDTO;
 import dasturlashuz.giybat.entity.ProfileEntity;
 import dasturlashuz.giybat.entity.ProfileRoleEntity;
 import dasturlashuz.giybat.enums.ProfileRole;
+import dasturlashuz.giybat.enums.ProfileStatus;
 import dasturlashuz.giybat.exceptions.*;
 import dasturlashuz.giybat.mapper.profile.ProfileMapper;
 import dasturlashuz.giybat.mapper.profile.ProfileShortInfoMapper;
 import dasturlashuz.giybat.repository.ProfileRepository;
 import dasturlashuz.giybat.util.profile.ProfileUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,9 @@ public class ProfileService {
     private ProfileRoleService profileRoleService;
     @Autowired
     private AttachService attachService;
+    @Autowired
+    @Lazy
+    private EmailSendingService emailSendingService;
 
     @Qualifier("profileMapper")
     private final ProfileMapper profileMapper;
@@ -130,6 +136,45 @@ public class ProfileService {
         return new ProfileCreateDTO.ProfileDetailDTO(map.getName(), map.getUsername(), map.getRoles(), photoId, photoUrl);
     }
 
+
+    public ProfileCreateDTO.ProfileResponse updateName(ProfileCreateDTO.ProfileUpdateName dto) {
+        ProfileEntity currentUser = findByIdForSession(getCurrentUserId());
+        currentUser.setName(dto.name());
+        profileRepository.save(currentUser);
+        return profileMapper.profileToProfileDTO(currentUser);
+    }
+
+    public ProfileCreateDTO.ProfileResponse updatePhoto(ProfileCreateDTO.ProfileUpdatePhoto dto) {
+        ProfileEntity currentUser = findByIdForSession(getCurrentUserId());
+        currentUser.setAttachId(dto.photoId());
+        profileRepository.save(currentUser);
+        return profileMapper.profileToProfileDTO(currentUser);
+    }
+    public String updatePassword(ProfileCreateDTO.ProfileUpdatePassword dto) {
+        ProfileEntity currentUser = findByIdForSession(getCurrentUserId());
+        if (!passwordEncoder.matches(dto.oldPassword(), currentUser.getPassword())){
+            throw new AppBadException("Old password does not match");
+        }
+
+        if (passwordEncoder.matches(dto.newPassword(), currentUser.getPassword())) {
+            throw new AppBadException("New password cannot be the same as the old password");
+        }
+        currentUser.setPassword(passwordEncoder.encode(dto.newPassword()));
+        profileRepository.save(currentUser);
+        return "Password updated";
+    }
+
+    public String updateUsername(ProfileCreateDTO.ProfileUpdateUsername dto) {
+        ProfileEntity currentUser = findByIdForSession(getCurrentUserId());
+        if (currentUser.getUsername().equals(dto.username())){
+            throw new AppBadException("You are entering a previous username.");
+        }
+        currentUser.setUsername(dto.username());
+        currentUser.setStatus(ProfileStatus.UNVERIFIED);
+        profileRepository.save(currentUser);
+        emailSendingService.sendRegistrationEmail(currentUser.getUsername(), currentUser.getId());
+        return "Username updated confirm email";
+    }
 
     // DataBase bilan boglana oladigan yordamchi class lar
 

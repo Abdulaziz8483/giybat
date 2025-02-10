@@ -16,4 +16,5 @@ public interface PostRepository extends JpaRepository<PostEntity, String>, JpaSp
 
     List<PostEntity> findByProfileId(Integer profileId);
     Page<PostEntity> findByProfileId(Integer profileId, Pageable pageable);
+    Integer countByProfileId(Integer profileId);
 }

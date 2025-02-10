@@ -10,6 +10,7 @@ import dasturlashuz.giybat.exceptions.*;
 import dasturlashuz.giybat.mapper.profile.ProfileMapper;
 import dasturlashuz.giybat.mapper.profile.ProfileShortInfoMapper;
 import dasturlashuz.giybat.repository.ProfileRepository;
+import dasturlashuz.giybat.util.ProfileSpecification;
 import dasturlashuz.giybat.util.profile.ProfileUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +48,9 @@ public class ProfileService {
     @Autowired
     @Lazy
     private EmailSendingService emailSendingService;
+    @Autowired
+    @Lazy
+    private PostService postService;
 
     @Qualifier("profileMapper")
     private final ProfileMapper profileMapper;
@@ -176,6 +185,24 @@ public class ProfileService {
         return "Username updated confirm email";
     }
 
+    public List<ProfileCreateDTO.ProfileFilterResponse> filter(ProfileCreateDTO.ProfileFilterDTO dto, int page, int size) {
+
+        Page<ProfileEntity> profilePage = getFilter(dto, page, size);
+        List<ProfileCreateDTO.ProfileFilterResponse> profileResponses = profilePage.getContent().stream()
+                .map(profile ->{
+                    return new ProfileCreateDTO.ProfileFilterResponse(
+                            profile.getId(),
+                            profile.getName(),
+                            profile.getUsername(),
+                            profile.getAttachId(),
+                            attachService.openUrl(profile.getAttachId()),
+                            postService.getProfilePostCount(profile.getId())
+                    );
+                })
+                .toList();
+        return profileResponses;
+    }
+
     // DataBase bilan boglana oladigan yordamchi class lar
 
     public StandardResponse checkUsernameExists(String email) {
@@ -192,5 +219,12 @@ public class ProfileService {
             throw new AppBadException("Profile not found");
         }
         return optionalProfile.get();
+    }
+
+    public Page<ProfileEntity> getFilter(ProfileCreateDTO.ProfileFilterDTO dto , int page, int size) {
+        Specification<ProfileEntity> spec = ProfileSpecification.filterProfiles(dto);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        return profileRepository.findAll(spec, pageable);
     }
 }

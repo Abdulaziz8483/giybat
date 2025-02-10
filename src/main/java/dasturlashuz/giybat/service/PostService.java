@@ -163,11 +163,16 @@ public class PostService {
         return false;
     }
 
+
+    //Util method lar database bilan boglana oladigan
     public Page<PostEntity> getFilter(PostCreateDTO.PostFilterDTO dto, int page, int size) {
         Specification<PostEntity> spec = PostSpecification.filterPosts(dto);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<PostEntity> all = postRepository.findAll(spec, pageable);
         return all;
+    }
+    public Integer getProfilePostCount(Integer profileId) {
+        return postRepository.countByProfileId(profileId);
     }
 }

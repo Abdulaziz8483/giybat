@@ -57,5 +57,13 @@ public class ProfileController {
     public ResponseEntity<String> updateUsername(@RequestBody @Valid ProfileCreateDTO.ProfileUpdateUsername dto){
         return ResponseEntity.ok(service.updateUsername(dto));
     }
+    @GetMapping("/filter")
+    public ResponseEntity<List<ProfileCreateDTO.ProfileFilterResponse>> filter(
+            @RequestBody ProfileCreateDTO.ProfileFilterDTO dto,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size){
+        return ResponseEntity.ok(service.filter(dto, page, size));
+    }
+
 
 }

@@ -27,6 +27,14 @@ public record ProfileCreateDTO(
             ProfileStatus status
             //ProfileRole role
     ){}
+    public record ProfileFilterResponse(
+            Integer id,
+            String name,
+            String username,
+            String photoId,
+            String photoUrl,
+            Integer postCount
+    ){}
     public record ProfileFilterDTO(
             String name,
             String username,
@@ -35,14 +43,6 @@ public record ProfileCreateDTO(
             LocalDateTime fromCreatedAt,
             LocalDateTime toCreatedAt,
             ProfileRole role
-    ){}
-    public record ProfileFilterResponse(
-            Integer id,
-            String name,
-            String username,
-            String photoId,
-            String photoUrl,
-            int postCount
     ){}
     public record ProfileDetailDTO(
             String name,

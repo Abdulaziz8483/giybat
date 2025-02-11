@@ -21,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -38,17 +40,15 @@ public class AuthService {
     @Autowired
     private ProfileService profileService;
 
-    public String Registration(RegistrationDTO dto) {
-
+    public Map<String, Object> Registration(RegistrationDTO dto) {
+        Map<String, Object> response = new HashMap<>();
 
         Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleTrue(dto.getUsername());
-
         if (optional.isPresent()) {
             ProfileEntity profile = optional.get();
             if (profile.getStatus().equals(ProfileStatus.IN_REGISTERED)) {
                 profileRoleService.delete(profile.getId());
                 profileRepository.delete(profile);
-
             } else {
                 throw new AppBadException("User already exists");
             }
@@ -64,11 +64,13 @@ public class AuthService {
         profileRepository.save(entity);
 
         profileRoleService.createProfileRole(entity.getId(), ProfileRole.USER);
-
         emailSendingService.sendRegistrationEmail(entity.getUsername(), entity.getId());
 
-        return "Registration successful";
+        response.put("success", true);
+        response.put("message", "Registration successful");
+        return response;
     }
+
 
     public String regVerification(Integer profileId) {
         ProfileEntity profile = profileService.getbyId(profileId);
@@ -79,15 +81,22 @@ public class AuthService {
         throw new AppBadException("Verification failed. User is not in registration status");
     }
 
-    public String login(@Valid AuthDto dto) {
+    public Map<String, String> login(AuthDto dto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+
             if (authentication.isAuthenticated()) {
                 CustomUserDetails profile = (CustomUserDetails) authentication.getPrincipal();
                 String token = JwtUtil.encode(profile.getUsername(), profile.getId(), profile.getRole());
-                return "{\"message\": \"Login successful.\", \"token\": \"" + token + "\"}";
+
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Login successful.");
+                response.put("token", token);
+
+                return response;
             }
+
             throw new AppBadException("Invalid username or password");
         } catch (BadCredentialsException e) {
             throw new AppBadException("Invalid username or password");
@@ -95,7 +104,7 @@ public class AuthService {
             e.printStackTrace();
             throw new AppBadException("Internal server error");
         }
-
     }
+
 
 }

@@ -40,9 +40,9 @@ public record ProfileCreateDTO(
             String username,
             ProfileStatus status,
             Boolean visible,
-            LocalDateTime fromCreatedAt,
-            LocalDateTime toCreatedAt,
-            ProfileRole role
+            LocalDateTime fromCreatedDate,
+            LocalDateTime toCreatedDate
+            //ProfileRole role
     ){}
     public record ProfileDetailDTO(
             String name,

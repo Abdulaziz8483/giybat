@@ -16,10 +16,10 @@ public class ProfileSpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             if (filterDTO.name() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("name"), "%" + filterDTO.name() + "%" ));
+                predicates.add(criteriaBuilder.like(root.get("name"), "%" + filterDTO.name() + "%" ));
             }
             if (filterDTO.username() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("user_name"), "%" + filterDTO.username() + "%" ));
+                predicates.add(criteriaBuilder.like(root.get("username"), "%" + filterDTO.username() + "%" ));
             }
             if (filterDTO.status() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("status"), filterDTO.status()));
@@ -27,11 +27,8 @@ public class ProfileSpecification {
             if (filterDTO.visible() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("visible"), filterDTO.visible()));
             }
-            if (filterDTO.role() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("role"), filterDTO.role()));
-            }
-            if (filterDTO.fromCreatedAt() != null && filterDTO.toCreatedAt() != null) {
-                predicates.add(criteriaBuilder.between(root.get("createdAt"), filterDTO.fromCreatedAt(), filterDTO.toCreatedAt()));
+            if (filterDTO.fromCreatedDate() != null && filterDTO.toCreatedDate() != null) {
+                predicates.add(criteriaBuilder.between(root.get("createdDate"), filterDTO.fromCreatedDate(), filterDTO.toCreatedDate()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

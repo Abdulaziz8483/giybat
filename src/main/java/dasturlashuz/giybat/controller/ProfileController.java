@@ -57,7 +57,7 @@ public class ProfileController {
     public ResponseEntity<String> updateUsername(@RequestBody @Valid ProfileCreateDTO.ProfileUpdateUsername dto){
         return ResponseEntity.ok(service.updateUsername(dto));
     }
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity<List<ProfileCreateDTO.ProfileFilterResponse>> filter(
             @RequestBody ProfileCreateDTO.ProfileFilterDTO dto,
             @RequestParam(value = "page", defaultValue = "1") int page,

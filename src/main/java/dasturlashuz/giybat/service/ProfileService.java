@@ -223,7 +223,7 @@ public class ProfileService {
 
     public Page<ProfileEntity> getFilter(ProfileCreateDTO.ProfileFilterDTO dto , int page, int size) {
         Specification<ProfileEntity> spec = ProfileSpecification.filterProfiles(dto);
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
 
         return profileRepository.findAll(spec, pageable);
     }

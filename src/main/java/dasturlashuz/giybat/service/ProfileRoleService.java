@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProfileRoleService {
@@ -26,4 +27,9 @@ public class ProfileRoleService {
     public void delete(Integer profileId) {
         profileRoleRepository.deleteByProfileId(profileId);
     }
+
+    public List<String> getRolesByProfileId(Integer profileId) {
+        return profileRoleRepository.getRolesByProfileId(profileId);
+    }
+
 }

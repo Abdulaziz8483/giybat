@@ -1,5 +1,6 @@
 package dasturlashuz.giybat.config;
 
+import io.micrometer.core.ipc.http.HttpSender;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,8 +47,9 @@ public class SpringConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
-                    .requestMatchers("/api/v1/**").permitAll()
                     .requestMatchers("/api/**").permitAll()
+                    .requestMatchers("/api/v1/**").permitAll()
+
                     .anyRequest()
                     .authenticated();
         }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

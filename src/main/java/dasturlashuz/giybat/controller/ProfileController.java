@@ -1,5 +1,6 @@
 package dasturlashuz.giybat.controller;
 
+import dasturlashuz.giybat.dto.StandardResponse;
 import dasturlashuz.giybat.dto.profile.ProfileCreateDTO;
 import dasturlashuz.giybat.service.ProfileService;
 import jakarta.validation.Valid;
@@ -50,7 +51,7 @@ public class ProfileController {
         return ResponseEntity.ok(service.updatePhoto(dto));
     }
     @PutMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@RequestBody @Valid ProfileCreateDTO.ProfileUpdatePassword dto){
+    public ResponseEntity<StandardResponse> updatePassword(@RequestBody @Valid ProfileCreateDTO.ProfileUpdatePassword dto){
         return ResponseEntity.ok(service.updatePassword(dto));
     }
     @PutMapping("/update-username")

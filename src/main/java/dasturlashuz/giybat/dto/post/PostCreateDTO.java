@@ -10,14 +10,14 @@ public record PostCreateDTO(
         String content,
         String photoId
 ) {
-    public record PostResponse(
-            String id,
-            String title,
-            String content,
-            String photoUrl,
-            String photoId,
-            LocalDateTime createdDate
-    ){}
+        public record PostResponse(
+                String id,
+                String title,
+                String content,
+                String photoUrl,
+                String photoId,
+                LocalDateTime createdDate
+        ){}
     public record PostFilterDTO(
             String title,
             LocalDateTime publishedDateFrom,

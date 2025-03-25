@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/post")
+@RequestMapping("/api/post")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
 
     @PostMapping("")
     public ResponseEntity<PostCreateDTO.PostResponse> create(@RequestBody @Valid PostCreateDTO dto) {
+        System.out.println(dto);
         return ResponseEntity.ok(postService.create(dto));
     }
 

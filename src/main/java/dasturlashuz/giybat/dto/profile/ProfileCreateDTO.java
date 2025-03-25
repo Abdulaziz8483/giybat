@@ -64,7 +64,7 @@ public record ProfileCreateDTO(
 
     public record ProfileUpdatePassword(
             @NotBlank(message = "The password should not be empty")
-            @Size(min = 4, message = "Please enter more than 6 characters")
+            @Size(min = 6, message = "Please enter more than 6 characters")
             String oldPassword,
 
             @NotBlank(message = "The password should not be empty")

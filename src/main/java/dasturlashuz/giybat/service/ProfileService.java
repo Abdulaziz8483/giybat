@@ -159,7 +159,7 @@ public class ProfileService {
         profileRepository.save(currentUser);
         return profileMapper.profileToProfileDTO(currentUser);
     }
-    public String updatePassword(ProfileCreateDTO.ProfileUpdatePassword dto) {
+    public StandardResponse updatePassword(ProfileCreateDTO.ProfileUpdatePassword dto) {
         ProfileEntity currentUser = findByIdForSession(getCurrentUserId());
         if (!passwordEncoder.matches(dto.oldPassword(), currentUser.getPassword())){
             throw new AppBadException("Old password does not match");
@@ -170,7 +170,7 @@ public class ProfileService {
         }
         currentUser.setPassword(passwordEncoder.encode(dto.newPassword()));
         profileRepository.save(currentUser);
-        return "Password updated";
+        return new StandardResponse("Password updated", true);
     }
 
     public String updateUsername(ProfileCreateDTO.ProfileUpdateUsername dto) {

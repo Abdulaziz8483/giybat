@@ -4,7 +4,10 @@ package dasturlashuz.giybat.service;
 
 import dasturlashuz.giybat.config.CustomUserDetails;
 import dasturlashuz.giybat.dto.AuthDto;
+import dasturlashuz.giybat.dto.LoginResponseDTO;
 import dasturlashuz.giybat.dto.RegistrationDTO;
+import dasturlashuz.giybat.dto.StandardResponse;
+import dasturlashuz.giybat.dto.attach.AttachResponse;
 import dasturlashuz.giybat.entity.ProfileEntity;
 import dasturlashuz.giybat.enums.ProfileRole;
 import dasturlashuz.giybat.enums.ProfileStatus;
@@ -13,6 +16,7 @@ import dasturlashuz.giybat.repository.ProfileRepository;
 import dasturlashuz.giybat.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +24,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static dasturlashuz.giybat.util.session.SpringSecurityUtil.getCurrentUser;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +44,10 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private ProfileService profileService;
+    @Autowired
+    @Lazy
+    private AttachService attachService;
+
 
     public String Registration(RegistrationDTO dto) {
 
@@ -79,14 +90,23 @@ public class AuthService {
         throw new AppBadException("Verification failed. User is not in registration status");
     }
 
-    public String login(@Valid AuthDto dto) {
+    public LoginResponseDTO login(@Valid AuthDto dto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
             if (authentication.isAuthenticated()) {
                 CustomUserDetails profile = (CustomUserDetails) authentication.getPrincipal();
                 String token = JwtUtil.encode(profile.getUsername(), profile.getId(), profile.getRole());
-                return "{\"message\": \"Login successful.\", \"token\": \"" + token + "\"}";
+
+                //getRole list
+                List<String> profileRoles = profileRoleService.getRolesByProfileId(profile.getId());
+                //get Photo id and url
+                ProfileEntity currentUser = profileService.getbyId(profile.getId());
+
+                attachService.openUrl(currentUser.getAttachId());
+                AttachResponse.AttachUrl photo = new AttachResponse.AttachUrl(currentUser.getAttachId(), attachService.openUrl(currentUser.getAttachId()));
+
+                return new LoginResponseDTO(profile.getName(), profile.getUsername(),profileRoles,token,photo);
             }
             throw new AppBadException("Invalid username or password");
         } catch (BadCredentialsException e) {
